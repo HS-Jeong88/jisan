@@ -177,13 +177,13 @@
 			tabCont.hide().eq(0).show();
 
 			tabBtn.click(function(e){
-			  e.preventDefault();
-			  var target = $(this);
-			  var index = target.index()
-			  tabBtn.removeClass("on");
-			  target.addClass("on");
-			  tabCont.hide();
-			  tabCont.eq(index).show();
+				e.preventDefault();
+				var target = $(this);
+				var index = target.index()
+				tabBtn.removeClass("on");
+				target.addClass("on");
+				tabCont.hide();
+				tabCont.eq(index).show();
 			});
 		});
 		<% If getnowtime() < "202310041000" Then %>

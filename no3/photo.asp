@@ -2,48 +2,75 @@
 <!--#include virtual="/w2/reservation/ticket/func/setting.asp" -->
 <!--#include virtual="/w2/reservation/ticket/func/ticket_login.asp" -->
 <%
-	Dim spec(6)
+	
 
 	Call SetDB(conn, rs)
+	sns_id = Session("sns_id")
 
-	'//로그인 회원정보 가져오기
-	Sql =	" Select	mb_name, mb_resno1, vSex, mb_hp,  mb_email, mb_resno1 From	jsmember " &_
-				" Where	mb_id = '" & js_id & "' " 
-
-	
-	Call QueryArray(sql, spec, 6)
-
-	Call SetDBNot(conn,rs)
-
-	name		= spec(1)
-	sex		= spec(3)
-	hp			= spec(4)
-	email	= spec(5)
-	birth	= spec(6)
-
-	
-
-	If Len(birth) = 6 Then		
-		If Left(birth, 2) <= Left(GetNow(),2) Then
-			birth = "20"&birth
+	'//로그인 회원정보 가져오기Dim id
+		If IsEmpty(js_id) Then
+			spec(2)
+			id = sns_id
+			Sql =	" Select mb_name, mb_hp From	jssnsmember " &_
+				" Where	mb_id = '" & id & "' " 
+			Call QueryArray(sql, spec, 2)
 		Else
-			birth = "19"&birth
+			spec(6)
+			id = js_id
+			Sql =	" Select mb_name, mb_resno1, vSex, mb_hp, mb_email, mb_resno1 From jsmember " &_
+				" Where	mb_id = '" & id & "' " 
+			Call QueryArray(sql, spec, 6)
 		End If
-	End If
+	
+	Call SetDBNot(conn,rs)
+	
+	If IsEmpty(sns_id) Then
+		name		= spec(1)
+		sex		= spec(3)
+		hp			= spec(4)
+		email	= spec(5)
+		birth	= spec(6)
 
-	If Len(birth) <> 8 Then birth = ""
-	If sex = "M" Then
-		sex = "1"
-	ElseIf sex = "F" Then
-		sex = "2"
+		If Len(birth) = 6 Then		
+			If Left(birth, 2) <= Left(GetNow(),2) Then
+				birth = "20"&birth
+			Else
+				birth = "19"&birth
+			End If
+		End If
+
+		If Len(birth) <> 8 Then birth = ""
+		If sex = "M" Then
+			sex = "1"
+		ElseIf sex = "F" Then
+			sex = "2"
+		End If
+
+	Else
+		name		= spec(1)
+		hp			= spec(2)
 	End If
 
 	If NullChk(hp) Then hp = "--"
 	
 	arr_hp		= split(hp, "-")
 
-	If Len(birth) = 8 And Len(sex) ="1" And Len(arr_hp(2)) ="4" And NullChk(name) = False Then
-		memcode=birth & "-" & sex & "-" & arr_hp(2) & "-" & name
+	If IsEmpty(sns_id) Then
+		If Len(birth) = 8 And Len(sex) ="1" And Len(arr_hp(2)) ="4" And NullChk(name) = False Then
+			memcode=birth & "-" & sex & "-" & arr_hp(2) & "-" & name
+		Else
+			Call ScriptAlert("개인정보에 필수데이타가 없습니니다.\n정보수정에서 가입정보를 확인해주세요.")
+			Call ScriptLocation(agentChkLink & "/member/mypage/member_pwc.asp")	
+			Response.end	
+		End If
+	Else
+		If Len(arr_hp(2)) ="4" And NullChk(name) = False Then
+			memcode=arr_hp(2) & "-" & name
+		Else
+			Call ScriptAlert("개인정보에 필수데이타가 없습니니다.\n정보수정에서 가입정보를 확인해주세요.")
+			Call ScriptLocation(agentChkLink & "/member/mypage/member_pwc.asp")	
+			Response.end	
+		End If
 	End If
 
 %>

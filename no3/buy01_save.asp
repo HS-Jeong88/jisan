@@ -6,6 +6,7 @@
 
 
 	'On Error resume Next
+	sns_id = Session("sns_id")
 
 	buytype				=	Trim(request("buytype"))	
 	userCnt				=	Trim(request("userCnt"))	
@@ -238,6 +239,12 @@
 		End If
 
 
+		Dim id 
+		If IsEmpty(js_id) Then
+			id = sns_id
+		Else
+			id = js_id
+		End If
 		sql = " Insert into tb_ticket_pending "
 		sql = sql & "( seasonYear, memcode, memtype, yearcha, name, birth, sex, hp, tel, email, imagefile "
 		sql = sql & " , poll1, poll2, login_id, buytype, s_memage, s_usetime " 
@@ -245,7 +252,7 @@
 		sql = sql & " , s_price, s_sumprice, reg_ymd, reg_ip ) "
 		sql = sql & " Values "
 		sql = sql & "('"& seasonYear &"','"& memcode &"','"& memtype &"','"& yearcha &"','" &name &"','"& birth &"','"& sex &"','"& hp &"','"& tel &"','"& email &"','"& imagefile &"' "
-		sql = sql & " ,'"& poll1 &"','"& poll2 &"' ,'" & js_id &"','"& buytype &"','"& memage &"','"& s_usetime &"' "
+		sql = sql & " ,'"& poll1 &"','"& poll2 &"' ,'" & id &"','"& buytype &"','"& memage &"','"& s_usetime &"' "
 		sql = sql & " ,'"& s_group_memcode &"','"& s_group_name &"' ,'" & s_group_level &"','"& s_group_position &"','"& s_group_couple &"' "
 		sql = sql & " ,'"& s_price &"','"& s_price &"','"& GetNow() &"','"& selfip() &"') "
 

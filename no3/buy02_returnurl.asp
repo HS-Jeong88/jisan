@@ -10,13 +10,19 @@
 	if IsNull(payReqMap)then
 		response.write "세션이 만료 되었거나 유효하지 않은 요청 입니다."
 	end if 
+	sns_id = Session("sns_id")
 
 	
-
+Dim id 
+		If IsEmpty(js_id) Then
+			id = sns_id
+		Else
+			id = js_id
+		End If
 	If Err.Number <> 0 Then
 		Call SetDB(conn, rs)
 		Sql =	" Insert Into	tb_card_returnFail_log( m_id, gu, USER_AGENT, REFERER, LGD_RESPCODE, LGD_RESPMSG, WRITE_DT,  REG_IP ) " & _
-					" Values (  '" & js_id & "','" & conStringToDB(request.servervariables("HTTP_url")) & "', '" & conStringToDB(Request.ServerVariables("HTTP_USER_AGENT")) & "' " &_
+					" Values (  '" & id & "','" & conStringToDB(request.servervariables("HTTP_url")) & "', '" & conStringToDB(Request.ServerVariables("HTTP_USER_AGENT")) & "' " &_
 					" ,'" & conStringToDB(Request.ServerVariables("HTTP_REFERER")) & "', '" & conStringToDB(Request("LGD_RESPCODE")) & "', '" & conStringToDB(Request("LGD_RESPMSG")) & "', '" & GetNow() & "', '" & selfip() & "' ) "
 		Conn.Execute(Sql)
 		Call SetDBNot(conn, rs)

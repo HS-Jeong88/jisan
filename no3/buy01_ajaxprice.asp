@@ -8,6 +8,7 @@
 	group_couple = request("group_couple")  '// 그룹일때 커플선택
 	halfPrice = request("halfPrice")  '// 가족-아이-반값
 	groupName = unescape(request("groupName")) '// 그룹체크
+	sns_id = Session("sns_id")
 
 
 	'//요금차수 설정(여기하고 buy_02_ajax.asp 두군데 해줘야함)
@@ -39,9 +40,14 @@
 
 		If NullCHk(members) Then members = "1"
 
-		'//로그용
+		'//로그용Dim id 
+		If IsEmpty(js_id) Then
+			id = sns_id
+		Else
+			id = js_id
+		End If
 		sql = "insert into tb_ticket_firstlog(jisan_id, memcode, memtype, yearcha, memage, fn_option, reg_ip) " &_
-				"	values('"& js_id &"','"& memcode &"','"& memtype &"','"& yearcha &"','"& memage &"','buy_02_ajax.asp','"& selfip() &"') "
+				"	values('"& id &"','"& memcode &"','"& memtype &"','"& yearcha &"','"& memage &"','buy_02_ajax.asp','"& selfip() &"') "
 		Conn.Execute( sql )
 
 		'//구매가능 권종및 비용가져오기
@@ -63,7 +69,7 @@
 			If NullChk(tmpGroupmemcode) = False Then 
 				If tmpGroupmemcode = memcode Then
 					sql = " select name, birth, sex, s_group_couple, hp, tel, email, memcode, imagefile, s_group_level, s_usetime " &_
-						  " from tb_ticket_pending where buytype = 'group' and s_group_memcode='" & memcode & "' and s_group_position='N' "
+							" from tb_ticket_pending where buytype = 'group' and s_group_memcode='" & memcode & "' and s_group_position='N' "
 					a_GroupList =	QueryRows(Sql)	
 
 					If isArray(a_GroupList) Then

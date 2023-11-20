@@ -10,12 +10,13 @@
 	On Error resume Next
 
 	Call SetDB(conn, rs)
+	sns_id = Session("sns_id")
 	
 	
 	'공통정보
-    CST_PLATFORM               = trim(request("CST_PLATFORM"))       'LG유플러스 결제 서비스 선택(test:테스트, service:서비스)
-    CST_MID                    = trim(request("CST_MID"))            '상점아이디(LG유플러스으로 부터 발급받으신 상점아이디를 입력하세요)
-                                                                     '테스트 아이디는 't'를 반드시 제외하고 입력하세요.
+    CST_PLATFORM		= trim(request("CST_PLATFORM"))       'LG유플러스 결제 서비스 선택(test:테스트, service:서비스)
+    CST_MID 				= trim(request("CST_MID"))            '상점아이디(LG유플러스으로 부터 발급받으신 상점아이디를 입력하세요)
+                                                                    '테스트 아이디는 't'를 반드시 제외하고 입력하세요.
     if CST_PLATFORM = "test" then                                    '상점아이디(자동생성)
         LGD_MID = "t" & CST_MID
     else
@@ -36,7 +37,7 @@
 
     xpay.Set "LGD_TXNAME", "PaymentByKey"
     xpay.Set "LGD_PAYKEY", LGD_PAYKEY 
-	    
+
     if  xpay.TX() then
         '1)결제결과 처리(성공,실패 결과 처리를 하시기 바랍니다.)
 '				Response.Write("결제요청이 완료되었습니다. <br>")
@@ -72,12 +73,17 @@
 				
 
 				s_account_order = xpay.Response("LGD_OID", 0)
-
+Dim id 
+		If IsEmpty(js_id) Then
+			id = sns_id
+		Else
+			id = js_id
+		End If
 				sql = " INSERT INTO tb_ticket_lgdacom " &_
 							"		(resCode, resMsg, LGD_TID, LGD_MID, LGD_OID, LGD_AMOUNT, LGD_RESPCODE, LGD_RESPMSG, LGD_RESPALL, jisan_id, reg_ymd, reg_ip) " &_
 							"	VALUES('"& conStringToDB(xpay.resCode) &"','"& conStringToDB(xpay.resMsg) &"','"& conStringToDB(xpay.Response("LGD_TID", 0)) &"','"& conStringToDB(xpay.Response("LGD_MID", 0)) &"' " &_
 							",'"& conStringToDB(s_account_order) &"' ,'"& conStringToDB(xpay.Response("LGD_AMOUNT", 0)) &"','"& conStringToDB(xpay.Response("LGD_RESPCODE", 0)) &"' " &_
-							",'"& conStringToDB(xpay.Response("LGD_RESPMSG", 0)) &"','"& conStringToDB(LGD_RESPALL) &"','"& js_id &"','"& GetNow() &"','"& SelfIP() &"') "
+							",'"& conStringToDB(xpay.Response("LGD_RESPMSG", 0)) &"','"& conStringToDB(LGD_RESPALL) &"','"& id &"','"& GetNow() &"','"& SelfIP() &"') "
 				Conn.Execute( sql )
 
 
@@ -137,10 +143,15 @@
         		
                 Response.Write("TX Rollback Response_code = " & xpay.resCode & "<br>")
                 Response.Write("TX Rollback Response_msg = " & xpay.resMsg & "<p>")
-
+Dim id 
+		If IsEmpty(js_id) Then
+			id = sns_id
+		Else
+			id = js_id
+		End If
 								sql = " insert into tb_ticket_card_faillog (query, resCode, resMsg, s_account_order, errCnt, re_rtn, rtn_msg, jisan_id, reg_ip) " &_
 												"	values('"& conStringtoDB(sql) &"','"& xpay.resCode &"','"& xpay.resMsg &"','"& s_account_order &"','"& errCnt &"','"& re_rtn &"','"& rtn_msg &"' " &_
-												",'"& js_id &"','"&selfip()&"') "
+												",'"& id &"','"&selfip()&"') "
 								Conn.Execute( sql )
 								Call SetDBNot(conn,rs)
         		
@@ -167,12 +178,17 @@
 '
 '				'결제요청 결과 실패 상점 DB처리
 '				Response.Write("결제결제요청 결과 실패 DB처리하시기 바랍니다." & "<br>")
-
+ Dim id 
+		If IsEmpty(js_id) Then
+			id = sns_id
+		Else
+			id = js_id
+		End If
 				sql = " INSERT INTO tb_ticket_lgdacom " &_
 							"		(resCode, resMsg, LGD_TID, LGD_MID, LGD_OID, LGD_AMOUNT, LGD_RESPCODE, LGD_RESPMSG, LGD_RESPALL, jisan_id, reg_ymd, reg_ip) " &_
 							"	VALUES('"& conStringToDB(xpay.resCode) &"','"& conStringToDB(xpay.resMsg) &"','"& conStringToDB(xpay.Response("LGD_TID", 0)) &"','"& conStringToDB(xpay.Response("LGD_MID", 0)) &"' " &_
 							",'"& conStringToDB(xpay.Response("LGD_OID", 0)) &"' ,'"& conStringToDB(xpay.Response("LGD_AMOUNT", 0)) &"','"& conStringToDB(xpay.Response("LGD_RESPCODE", 0)) &"' " &_
-							",'"& conStringToDB(xpay.Response("LGD_RESPMSG", 0)) &"','','"& js_id &"','"& GetNow() &"','"& SelfIP() &"') "
+							",'"& conStringToDB(xpay.Response("LGD_RESPMSG", 0)) &"','','"& id &"','"& GetNow() &"','"& SelfIP() &"') "
 				Conn.Execute( sql )
 				errCnt = errCnt + Conn.Errors.Count
 

@@ -8,11 +8,6 @@
 '		Response.End
 '	End If	
 
-
-		
-	Dim spec(6)
-
-
 	If period = "false" And g_period = "false" Then
 		Call ScriptAlert("온라인 판매기간이 아닙니다.\n(23년 10월4일 10시부터 ~ 11월 19일까지 )")
 		Call ScriptLocation("/w2/reservation/ticket/info.asp")
@@ -20,51 +15,74 @@
 	End If
 
 	Call SetDB(conn, rs)
-
+	sns_id = Session("sns_id")
 	'//로그인 회원정보 가져오기
-	Sql =	" Select	mb_name, mb_resno1, vSex, mb_hp,  mb_email, mb_resno1 From	jsmember  " &_
-				" Where	mb_id = '" & js_id & "' " 
-	Call QueryArray(sql, spec, 6)
-
-	name		= spec(1)
-	sex		= spec(3)
-	hp			= spec(4)
-	email	= spec(5)
-	birth	= spec(6)
-
-
-	If Len(birth) = 6 Then		
-		If Left(birth, 2) <= Left(GetNow(),2) Then
-			birth = "20"&birth
+	Dim id
+		If IsEmpty(js_id) Then
+			spec(2)
+			id = sns_id
+			Sql =	" Select mb_name, mb_hp From	jssnsmember " &_
+				" Where	mb_id = '" & id & "' " 
+			Call QueryArray(sql, spec, 2)
 		Else
-			birth = "19"&birth
+			spec(6)
+			id = js_id
+			Sql =	" Select mb_name, mb_resno1, vSex, mb_hp, mb_email, mb_resno1 From jsmember " &_
+				" Where	mb_id = '" & id & "' " 
+			Call QueryArray(sql, spec, 6)
 		End If
-	End If
+	
+	If IsEmpty(sns_id) Then
+		name		= spec(1)
+		sex		= spec(3)
+		hp			= spec(4)
+		email	= spec(5)
+		birth	= spec(6)
 
-	If Len(birth) <> 8 Then birth = ""
-	If sex = "M" Then
-		sex = "1"
-	ElseIf sex = "F" Then
-		sex = "2"
-	End If
+		If Len(birth) = 6 Then		
+			If Left(birth, 2) <= Left(GetNow(),2) Then
+				birth = "20"&birth
+			Else
+				birth = "19"&birth
+			End If
+		End If
 
+		If Len(birth) <> 8 Then birth = ""
+		If sex = "M" Then
+			sex = "1"
+		ElseIf sex = "F" Then
+			sex = "2"
+		End If
+
+	Else
+		name		= spec(1)
+		hp			= spec(2)
+	End If
 
 	If NullChk(hp) Then hp = "--"
 	
 	arr_hp		= split(hp, "-")
 
-	If Len(birth) = 8 And Len(sex) ="1" And Len(arr_hp(2)) ="4" And NullChk(name) = False Then
-		memcode=birth & "-" & sex & "-" & arr_hp(2) & "-" & name
+	If IsEmpty(sns_id) Then
+		If Len(birth) = 8 And Len(sex) ="1" And Len(arr_hp(2)) ="4" And NullChk(name) = False Then
+			memcode=birth & "-" & sex & "-" & arr_hp(2) & "-" & name
+		Else
+			Call ScriptAlert("개인정보에 필수데이타가 없습니니다.\n정보수정에서 가입정보를 확인해주세요.")
+			Call ScriptLocation(agentChkLink & "/member/mypage/member_pwc.asp")	
+			Response.end	
+		End If
 	Else
-		Call ScriptAlert("개인정보에 필수데이타가 없습니니다.\n정보수정에서 가입정보를 확인해주세요.")
-		Call ScriptLocation(agentChkLink & "/member/mypage/member_pwc.asp")	
-		Response.end	
+		If Len(arr_hp(2)) ="4" And NullChk(name) = False Then
+			memcode=arr_hp(2) & "-" & name
+		Else
+			Call ScriptAlert("개인정보에 필수데이타가 없습니니다.\n정보수정에서 가입정보를 확인해주세요.")
+			Call ScriptLocation(agentChkLink & "/member/mypage/member_pwc.asp")	
+			Response.end	
+		End If
 	End If
-
 
 	sql = " select memcode, buytype, s_account_method, s_account_check from tb_ticket_buy Where seasonYear='" & seasonYear & "' and memcode = '" & memcode & "' "	
 	Call QueryFour(sql, preMemcode, preBuytype, preS_account_method, preS_account_check)
-
 
 	'//회원코드로 멤머타입, 년차 가져오기((1):memtype, (2):yearcha)
 	a_ticketMem = fn_memtypeChk(memcode)	
@@ -72,9 +90,9 @@
 	yearcha = a_ticketMem(2)	'//년차
 	memage  = a_ticketMem(3)	'//1:대인, 2:청소년, 3,소인
 
-	'If memcode="20010721-1-6810-박창민" Then memage = "1"
+'If memcode="20010721-1-6810-박창민" Then memage = "1"
 
-	'//기간체크(동호회원 일반회원은 기간이 틀림)
+'//기간체크(동호회원 일반회원은 기간이 틀림)
 '	If memtype="2" Or memtype="3" Then
 '		If g_period = "false" Then
 '			Call ScriptAlert("동호회시즌권 판매가 종료되었습니다.")
@@ -85,17 +103,12 @@
 
 	members = "1"
 
-	
-
-	
-	'//구매가능 권종및 비용가져오기
+'//구매가능 권종및 비용가져오기
 	'a_ticUsetime = fn_memTimeOption(memtype, yearcha, members, memage, "personal", "", "", memcode)	
-
 
 	'sql = "insert into tb_ticket_firstlog(jisan_id, memcode, memtype, yearcha, memage, fn_option, reg_ip) " &_
 	'			"	values('"& js_id &"','"& memcode &"','"& memtype &"','"& yearcha &"','"& memage &"','"& conStringtoDB(a_ticUsetime) &"','"& selfip() &"') "
 	'Conn.Execute( sql )
-
 
 	Call SetDBNot(conn,rs)
 %>
@@ -164,12 +177,10 @@
 							<li class="dot star">23/24 Season 시즌권 신규 구매자 연차 미적용</li>
 							<li class="dot star">기존 연차구매자에 한해 연차적용 가능</li>
 							<li class="dot star" id="familyMsgli" style="display:none">가족권 구매자는 필히 가족관계 증명서 지참</li>
-							
 						</ul>
 					</div>
 				</div>
 			</div>
-			
 			<p class="sub_tit pb36 pt90">사용자정보</p>
 			<div class="cont02">
 				<div class="top_wrap clearfix bdt_brown">
@@ -236,7 +247,6 @@
 										<input type="text" name="hp31" id="hp31" class="hp2" value="<%=arr_hp(2)%>" numberonly="true" maxlength="4" data-valid="notnull" data-alert="휴대전화번호" data-memcode='true'>
 									</td>
 								</tr>
-								
 								<tr>
 									<th scope="row">이메일</th>
 									<td scope="row" class="emali">
@@ -262,7 +272,6 @@
 					</div>
 				</div>
 			</div>
-
 			<div class="addUser"></div>
 			<div class="txt_center mt20">
 				<p class="add_del inner pd10">
@@ -290,15 +299,10 @@
 					</div>
 					<div class="more fs14">
 						<strong> 23/24시즌 리프트 시즌권 약관</strong><br><br>
-						
 						<h3>제1조(목적)</h3><br>
 						<p class="fs14">이 약관은 지산리조트㈜(이하 '사업자'로 합니다)가 판매하는 2023/2024시즌 리프트 시즌권을 구입하여 이용하는자(이하 '이용자'라 합니다)의 권리 와 의무 및 이용절차 등 기타 필요 사항의 규정을 정함을 목적으로 합니다.</p><br><br>
-						
-
 						<h3>제2조 (정의)</h3><br>
 						<p><span class="marginbt10">가.</span> 시즌권은 회원권이 아니며 스키 및 스노우보드 애호가를 위하여 대폭 할인된 가격으로 제공되는 리프트에 국한된 특별 할인상품입니다.<br><span class="color_bl">나. 본 시즌권으로 눈썰매장 이용은 불가 합니다.</span><br>다. 시즌권은 기명식 이용권입니다.</p><br><br>
-						
-						
 						<h3>제3조 (사용기간 및 적용)</h3><br>
 						<ol>
 							<li class="color_bl"><span class="marginbt70">가.</span> 시즌권의 사용기간은 하기(①,②)와 같이 구분되며 서비스 기간은 이용자에게 무상으로 제공되는 기간입니다 </li>
@@ -329,8 +333,8 @@
 									<td>전체시간대</td>
 								</tr>
 								<tr>
-									 <td colspan="5">단, 기후여건에 따라 심야 운영시기는 변동될 수 있으며  정설시간 제외<br>심야운영시기 : 12월20일 전후 ~ 2월중순경 예정 운영 (기후 여건에따라 변경 가능)<br />주중(일~목) 23:00 ~ 24:00시 정설타임 없이 운영합니다.</td>
-								 </tr>
+									<td colspan="5">단, 기후여건에 따라 심야 운영시기는 변동될 수 있으며  정설시간 제외<br>심야운영시기 : 12월20일 전후 ~ 2월중순경 예정 운영 (기후 여건에따라 변경 가능)<br />주중(일~목) 23:00 ~ 24:00시 정설타임 없이 운영합니다.</td>
+								</tr>
 							</tbody>
 						</table>
                         <p>※ 회원 시즌권 리프트 탑승 라인 별도 운영(일반 시즌권 입장 불가)	</p><br>
