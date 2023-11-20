@@ -45,7 +45,7 @@ $(document).ready(function () {
         if (result.rst == "Y") {
           if (result.graderank != "") {
             $("#rst1").text(result.rst1);
-            //$("#rst2").text(result.rst2);
+            //$("#rst2").text(result.rst2); 
             //$("#rst3").text(result.rst3);
             //$("#rst4").html(result.rst4);
             $("#rst5").attr("src", result.rst5);
