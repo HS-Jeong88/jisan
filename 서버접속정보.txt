@@ -1,0 +1,149 @@
+
+디비 
+IP : 222.122.43.148 / 192.1.29.148
+접속계정 : administrator/지산idc13%&
+MS -SQL : Microsoft Server 2014 Standard Edition SP1 64bit 
+sa 패스워드 : 지산리조트!@#45 
+데이타디렉토리 : D:\Microsoft SQL Serve
+
+웹서버1(리조트) 
+IP : 222.122.43.154 / 192.1.29.154
+접속계정 : administrator/지산idc13%&  (영타로계속 치기)
+ 
+
+웹서버2(골프) 
+IP : 222.122.43.155 / 192.1.29.155
+접속계정 : administrator/지산idc13%&
+
+-------------------------------------
+===웹서버1===
+1. IP : 192.1.29.154, 222.122.43.154
+3. port : 21
+4. ID : jisan
+5. PW : jisan1010
+-------------------------------------
+관리자계정
+mr-hskwon
+mr-hskwon^^
+
+홈페이지계정
+khs532
+khs532^^
+
+
+[지산리조트 홈페이지1 FTP]
+a. URL : http://www1.jisanresort.co.kr
+b. 리모트 디렉토리 : www
+
+[지산골프 홈페이지2 FTP]
+a. URL : http://www2.jisangolf.com
+b. 리모트 디렉토리 : /jisangolf
+
+[지산리조트 OLD 홈페이지 FTP]  -- 바로전시즌홈페이지
+a. URL : http://old.jisanresort.co.kr
+-b. 리모트 디렉토리 : /oldjisan
+
+[지산리조트리뉴얼 홈페이지 FTP]  -- 지산비시즌
+a. URL : http://new.jisanresort.co.kr
+b. 리모트 디렉토리 : /new
+
+[지산모터스 홈페이지 FTP]
+a. URL : http://www.jisanmotors.co.kr => http://subaru.jisanmotors.co.kr 로 리다이렉트(index에서 처리해놓음)
+b. 리모트 디렉토리 : /jsnew 
+
+[지산모터스 홈페이지 FTP]
+a. URL : http://www.subarukorea.kr
+b. 리모트 디렉토리 : /subaru
+
+[지산리조트모바일 홈페이지1 FTP] -- 리다이렉트처리함(www.jisanresort.co.kr/mobile/) config에서 처리함
+a. URL : http://m.jisanresort.co.kr
+b. 리모트 디렉토리 : /m
+
+
+
+[지산리조트ADMIN 홈페이지 FTP]
+a. URL : http://admin.jisanresort.co.kr
+b. 리모트 디렉토리 : /aspadmin
+
+
+[지산리조트ADMIN 홈페이지 FTP]
+a. URL : http://recruit.jisanresort.co.kr
+b. 리모트 디렉토리 : /recruit
+
+
+[지산리조트ADMIN 홈페이지 FTP]
+a. URL : http://intra.jisanmotors.co.kr
+b. 리모트 디렉토리 : /jsmintra
+
+[지산리조트ADMIN 홈페이지 FTP]
+a. URL : http://intra.subarukorea.kr
+b. 리모트 디렉토리 : /sbkintra
+
+
+[지산리조트 이전사이트] --리뉴얼사이트
+a. URL : http://rew.jisanresort.co.kr
+-b. 리모트 디렉토리: /rew
+
+[지산리조트모바일 FTP] --사용안함
+a. URL : http://rm.jisanresort.co.kr
+-b. 리모트 디렉토리 : /rm
+
+[셔틀버스 tour FTP]
+a. URL : http://tour.jisanresort.co.kr
+-b. 리모트 디렉토리 : /tour
+
+
+
+===웹서버2===
+1. IP : 192.1.29.155 (155)
+3. port : 21
+4. ID : jisan
+5. PW : jisan1010
+
+[지산골프 홈페이지1 FTP]
+a. URL : http://www1.jisangolf.com
+b. 리모트 디렉토리 : /golf
+
+[지산리조트 홈페이지2 FTP]  --?32bit 사이트갤럭시 사용
+a. URL : http://www2.jisanresort.co.kr
+b. 리모트 디렉토리 : /www
+
+[지산리조트 인트라넷 FTP]
+a. URL : http://intra.jisanresort.co.kr
+b. 리모트 디렉토리 : /intra
+
+[지산골프아카데미 홈페이지 FTP]
+a. URL : http://www.jpcgolf.co.kr
+b. 리모트 디렉토리 : /jpc
+
+[지산골프 모바일 FTP]
+a. URL : http://m.jisangolf.com
+b. 리모트 디렉토리 : /m
+
+[지산골프 모바일 FTP]
+a. URL : http://무노스
+b. 리모트 디렉토리 : /moonos
+moonos/moonos^^
+
+무노스
+IP : 222.122.43.155
+ID : moonos
+pw : moonos^^
+포트 : 21번포트
+디렉토리 : /moonos
+
+
+[지산골프 모바일 개발 FTP]
+a. URL : http://rm.jisangolf.com
+b. 리모트 디렉토리 : /rm
+
+
+[지산골프 테스트 FTP]
+a. URL : http://test.jisangolf.com
+b. 리모트 디렉토리 : /testgolf
+
+[XX지산골프 테스트 FTP] -- 미셋팅
+a. URL : http://otaru.jisangolf.com
+b. 리모트 디렉토리 : /otrau
+폴더 : D:\otaru.jisangolf.com
+
