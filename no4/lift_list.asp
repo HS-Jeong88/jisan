@@ -3,15 +3,18 @@
 <%
 	Call SetDBSki(conn, rs)
 	
-	sql = " exec xtw_WB_TK_SALES_S4  '"&js_id&"' "
+	Dim id
+		If NullChk(js_id) Then
+			id = Session("sns_id")
+		Else
+			id = js_id
+		End If
+	sql = " exec xtw_WB_TK_SALES_S4  '"&id&"' "
 	Call QueryOne(sql, buyYn)
 
 	If buyYn <> "ERROR" Then
 		arrLift =	QueryRows( sql)
 	End If
-	
-	
-	
 
 	Call SetDBNot(conn, rs)
 %>
@@ -135,7 +138,6 @@
 						<tbody>
 		<%	if isArray(arrLift) Then
 					For liftnum = 0 To UBound( arrLift, 2)	
-						
 						sales_dt			= arrLift(0, liftnum)
 						order_no		= arrLift(1, liftnum)
 						ticket_nm		= arrLift(2, liftnum)

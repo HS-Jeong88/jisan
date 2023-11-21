@@ -83,86 +83,75 @@
                         <td><%=eventUseCnt%>건</td>
                     </tr>
                 </table>
-			<%	If IsArray(a_grade) Then %>
-				<div class="fs30 brown pt60 pb20">당첨 상품 내역</div>
-				<div class="list bg_gray bdt_brown txt_center pt30 pb30 clearfix">
-			<%		For i = 0 To UBound( a_grade, 2) %>
-					<div class="box txt_center f_left">
-						<p class="txt1 fs25 fw500"><%=a_grade(5, i)%></p>
-						<p class="txt2 fs28 pt10 fw600"><%=a_grade(3, i)%></p>
-						<p class="txt3 fs10 pt10 fw200">당첨일 : <%=Left(a_grade(6, i),10)%></p>
-					</div>
-			<%		Next	%>
-				</div>
-			<%	End If	%>
-				<!-- <ul class="pt25">
-					<li class="dot hyphen gray6 fs18">리프트권 미 사용 후 결제 취소 시에는 상품 당첨이 취소됩니다.</li>
-					<li class="dot hyphen gray6 fs18">리프트권은 구매 후 30일이 경과하면 사용하실 수 없으며 또한 이벤트 응모도 불가능하므로, 해당 기간 내에 이용해 주시기 바랍니다.</li>
-				</ul> 
-				
-				<!-- 
-				<div class="fs30 brown pt60 pb20">이벤트 내역 조회</div>
-				<table class="mypage_table lift">
-					<caption>결제 상태 구분</caption>    
-					<colgroup>
-						<col style="width: 15%;">
-						<col style="width: auto;">
-					</colgroup>
-					<tr>
-						<th class="br1">결제 상태 구분</th>
-						<td>
-							<label>
-								<input type="radio" name="reserv_type" value="all" checked>
-								전체
-							</label>
-							<label>
-								<input type="radio" name="reserv_type" value="y">
-								당첨
-							</label>
-							<label>
-								<input type="radio" name="reserv_type" value="n">
-								미 당첨
-							</label>
-							<label>
-								<input type="radio" name="reserv_type" value="cancel">
-								당첨 취소 건
-							</label>
-						</td>
-					</tr>
-				</table>
-				 <table class="mypage_table txt_center">
-					<caption>이벤트 내역 조회</caption>
-					<colgroup>
-						<col style="width:12.5%">
-						<col style="width:12.5%">
-						<col style="width:12.5%">
-						<col style="width:12.5%">
-						<col style="width:12.5%">					
-						<col style="width:12.5%">
-						<col style="width:12.5%">
-						<col style="width:12.5%">
-					</colgroup>
-					<thead>
-						<tr>
-							<th>응모 날짜</th>
-							<th>응모 건수</th>
-							<th>당첨 여부</th>
-							<th>당첨 상품</th>
-							<th>상품 사용 내역</th>
-							<th>주문번호</th>
-							<th>리프트 권종</th>
-							<th>결제 금액</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td colspan="8">이벤트 당첨 내역이 없습니다.</td>
-						</tr>
-					</tbody>
-				</table>
-            </div>
-			-->
-		
-			 
+								<!-- <ul class="pt25">
+									<li class="dot hyphen gray6 fs18">리프트권 미 사용 후 결제 취소 시에는 상품 당첨이 취소됩니다.</li>
+									<li class="dot hyphen gray6 fs18">리프트권은 구매 후 30일이 경과하면 사용하실 수 없으며 또한 이벤트 응모도 불가능하므로, 해당 기간 내에 이용해 주시기 바랍니다.</li>
+								</ul> -->
+								<!-- <div class="fs30 brown pt60 pb20">이벤트 내역 조회</div>
+											<table class="mypage_table lift">
+												<caption>결제 상태 구분</caption>    
+												<colgroup>
+													<col style="width: 15%;">
+													<col style="width: auto;">
+												</colgroup>
+												<tr>
+													<th class="br1">결제 상태 구분</th>
+													<td>
+														<label>
+															<input type="radio" name="reserv_type" value="all" checked>
+															전체
+														</label>
+														<label>
+															<input type="radio" name="reserv_type" value="y">
+															당첨
+														</label>
+														<label>
+															<input type="radio" name="reserv_type" value="n">
+															미 당첨
+														</label>
+														<label>
+															<input type="radio" name="reserv_type" value="cancel">
+															당첨 취소 건
+														</label>
+													</td>
+												</tr>
+											</table>
+											<table class="mypage_table txt_center">
+												<caption>이벤트 내역 조회</caption>
+												<colgroup>
+													<col style="width:12.5%">
+													<col style="width:12.5%">
+													<col style="width:12.5%">
+													<col style="width:12.5%">
+													<col style="width:12.5%">					
+													<col style="width:12.5%">
+													<col style="width:12.5%">
+													<col style="width:12.5%">
+												</colgroup>
+												<thead>
+													<tr>
+														<th>응모 날짜</th>
+														<th>응모 건수</th>
+														<th>당첨 여부</th>
+														<th>당첨 상품</th>
+														<th>상품 사용 내역</th>
+														<th>주문번호</th>
+														<th>리프트 권종</th>
+														<th>결제 금액</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td colspan="8">이벤트 당첨 내역이 없습니다.</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										-->
+        			</div>
+        	</div>
         </div>
     </div>
+	
+
+
