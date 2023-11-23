@@ -108,11 +108,11 @@ Call SetDBNot(conn, rs)
 						<p>개인 락카함<br>구매</p>
 						<div><a href="/w2/reservation/gear/complete.asp" class="fw600 fs60"><%=gearCnt%></a> <span class="fs28">건</span></div>
 			
-						</li>
-						<li>
-							<p>부츠 락카함<br>구매</p>
-							<div><a href="./mypage/locker_list.asp" class="fw600 fs60"><%=bootCnt%></a> <span class="fs28">건</span></div>
-						</li> -->
+					</li>
+					<li>
+						<p>부츠 락카함<br>구매</p>
+						<div><a href="./mypage/locker_list.asp" class="fw600 fs60"><%=bootCnt%></a> <span class="fs28">건</span></div>
+					</li> -->
 						<li>
 							<p>시즌권 이용<br>조회</p>
 							<div><a href="./mypage/ticket_chart.asp" class="rel fs16 white brown_btn mt40">자세히 보기</a></div>
@@ -196,15 +196,11 @@ Call SetDBNot(conn, rs)
 											<% If s_usetime="1" or s_usetime="2" Then %>
 												<%If tmpMemtype="1" And yearcha> 1 Then Response.write "(" & yearcha & "년차)" End If %>
 											<% End If %>
-									</td>
+								  </td>
 									<td>
 										<%=fn_useTimeName(s_usetime)%>
 									</td>
-									<td>
-										<% If Left(buytype,4)="plus" Then %>
-											<%=FormatNumber(s_sumprice,0)%> 원
 												<% Else %>
-													<%=FormatNumber(s_price,0)%> 원 <% If s_group_position="Y" Then %> <br />(전체 :
 															<%=FormatNumber(s_sumprice,0)%> 원)
 									</td>
 														<% End If %>

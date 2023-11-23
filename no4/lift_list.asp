@@ -2,14 +2,13 @@
 <!--#include virtual="/conf/resvLift/prdt_setting.asp"-->
 <%
 	Call SetDBSki(conn, rs)
-	sns_id = Session("sns_id")
+	
 	Dim id
-		If IsEmpty(js_id) Then
-			id = sns_id
+		If NullChk(js_id) Then
+			id = Session("sns_id")
 		Else
 			id = js_id
 		End If
-
 	sql = " exec xtw_WB_TK_SALES_S4  '"&id&"' "
 	Call QueryOne(sql, buyYn)
 
@@ -137,8 +136,34 @@
 							</tr>
 						</thead>
 						<tbody>
-						<%	if isArray(arrLift) Then
-						For liftnum = 0 To UBound( arrLift, 2)	
+		<%	if isArray(arrLift) Then
+					For liftnum = 0 To UBound( arrLift, 2)	
+						sales_dt			= arrLift(0, liftnum)
+						order_no		= arrLift(1, liftnum)
+						ticket_nm		= arrLift(2, liftnum)
+						ticket_tot_amt	= arrLift(3, liftnum)
+						ticket_chk		= arrLift(4, liftnum)
+						order_status	= arrLift(5, liftnum)
+						lgd_tid			= arrLift(6, liftnum)
+						refund_dt		= arrLift(7, liftnum)
+						use_yn			= arrLift(8, liftnum)
+						ticket_status	= arrLift(9, liftnum)
+						use_dt			= arrLift(10, liftnum)
+						slip_no			= arrLift(11, liftnum)
+						pos_id			= arrLift(12, liftnum)
+						date_kind			= arrLift(13, liftnum)
+
+						If NullChk(use_dt) Then 
+							use_dt = ticket_status
+							use_cls = ""
+						Else
+							use_dt = putdate(use_dt,"yyyy-mm-dd")
+							use_cls = "complete"
+						End If
+
+						If order_status <> "정상" Then
+							use_cls = "complete"	
+						End If
 							
 							sales_dt			= arrLift(0, liftnum)
 							order_no		= arrLift(1, liftnum)

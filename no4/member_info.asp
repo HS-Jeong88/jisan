@@ -1,11 +1,7 @@
 <!--#include virtual="/conf/config.asp"-->
 <!--#include virtual="/proc/mypage_member_info.asp"-->
 
-<% 
-Dim js_id, sns_id 
-js_id=Session("js_id") 
-sns_id=Session("sns_id") 
-%>
+<% Dim js_id, sns_id js_id=Session("js_id") sns_id=Session("sns_id") %>
 
 
 <!doctype html>
@@ -65,7 +61,7 @@ sns_id=Session("sns_id")
 						</colgroup>
 						<tbody>
 							<%
-							If Not IsEmpty(js_id) Or Not IsEmpty(sns_id) Then
+							If Not IsEmpty(js_id) Then
 							%>
 							<tr>
 								<th scope="row" class="fs18 black br1"><span class="red2">*</span>이름</th>
